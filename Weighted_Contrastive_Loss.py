@@ -13,6 +13,11 @@ class OSPM_CAA_Loss(nn.Module):
         self.osm_sigma = 0.8  #\sigma OSM (0.8) as mentioned in paper
         
     def forward(self, x, labels , embd):
+        '''
+        x : feature vector : (n x d)
+        labels : (n,)
+        embd : Fully Connected weights of classification layer (dxC), C is the number of classes: represents the vectors for class
+        '''
         x = nn.functional.normalize(x, p=2, dim=1) # normalize the features
         n = x.size(0)
 
