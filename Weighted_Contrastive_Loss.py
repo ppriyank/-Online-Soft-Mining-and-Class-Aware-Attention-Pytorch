@@ -41,7 +41,7 @@ class OSM_CAA_Loss(nn.Module):
         
         A = [] #attention corresponding to each feature fector
         for i in range(n):
-            a_i = torch.exp(torch.dot(x[i] , embd[:,y[i]])) / denominator[i] 
+            a_i = torch.exp(torch.dot(x[i] , embd[:,labels[i]])) / denominator[i] 
             A.append(a_i)
 
         atten_class = torch.stack(A)
