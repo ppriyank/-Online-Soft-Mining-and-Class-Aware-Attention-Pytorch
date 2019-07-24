@@ -4,9 +4,9 @@ import torch.nn as nn
 # Implementation of Deep Metric Learning by Online Soft Mining and Class-Aware Attention
 # https://arxiv.org/pdf/1811.01459v2.pdf
 
-class OSPM_CAA_Loss(nn.Module):
+class OSM_CAA_Loss(nn.Module):
     def __init__(self, alpha=1.2, l=0.5, ):
-        super(CenterLoss, self).__init__()
+        super(OSM_CAA_Loss, self).__init__()
         self.alpha = 1.2 # margin of weighted contrastive loss, as mentioned in the paper 
         self.l = 0.5 #  hyperparameter controlling weights of positive set and the negative set  
         # I haven't been able to figure out the use of \sigma CAA 0.18 
