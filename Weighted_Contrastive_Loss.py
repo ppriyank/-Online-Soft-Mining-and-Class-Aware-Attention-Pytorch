@@ -5,8 +5,9 @@ import torch.nn as nn
 # https://arxiv.org/pdf/1811.01459v2.pdf
 
 class OSM_CAA_Loss(nn.Module):
-    def __init__(self, alpha=1.2, l=0.5, ):
+    def __init__(self, alpha=1.2, l=0.5, use_gpu=True):
         super(OSM_CAA_Loss, self).__init__()
+        self.use_gpu = use_gpu
         self.alpha = 1.2 # margin of weighted contrastive loss, as mentioned in the paper 
         self.l = 0.5 #  hyperparameter controlling weights of positive set and the negative set  
         # I haven't been able to figure out the use of \sigma CAA 0.18 
@@ -51,8 +52,12 @@ class OSM_CAA_Loss(nn.Module):
         W = S * A 
         W_P = W * p_mask.float()
         W_N = W * n_mask.float()
-        W_P = W_P * (1 - torch.eye(n, n).float())
-        W_N = W_N * (1 - torch.eye(n, n).float())
+        if self.use_gpu:
+            W_P = W_P * (1 - torch.eye(n, n).float().cuda())
+            W_N = W_N * (1 - torch.eye(n, n).float().cuda())
+        else:
+            W_P = W_P * (1 - torch.eye(n, n).float())
+            W_N = W_N * (1 - torch.eye(n, n).float())
         
         L_P = 1.0/2 * torch.sum(W_P * torch.pow(dist, 2)) / torch.sum(W_P)
         L_N = 1.0/2 * torch.sum(W_N * torch.pow(S_ , 2)) / torch.sum(W_N)
