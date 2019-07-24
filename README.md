@@ -2,8 +2,7 @@
 Implementation of Weighted Contrastive Loss from 
 
 
-**Deep Metric Learning by Online Soft Mining and Class-Aware Attention** (https://arxiv.org/pdf/1811.01459v2.pdf)
-
+**Deep Metric Learning by Online Soft Mining and Class-Aware Attention** (https://arxiv.org/pdf/1811.01459v2.pdf)    
 *Xinshao Wang, Yang Hua1, Elyor Kodirov, Guosheng Hu, Neil M. Robertson*
 
 I will release the tensorflow implementation of the same soon :) 
