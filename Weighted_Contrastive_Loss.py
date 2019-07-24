@@ -62,7 +62,7 @@ class OSM_CAA_Loss(nn.Module):
         L_P = 1.0/2 * torch.sum(W_P * torch.pow(dist, 2)) / torch.sum(W_P)
         L_N = 1.0/2 * torch.sum(W_N * torch.pow(S_ , 2)) / torch.sum(W_N)
         
-        L = (1- l) * L_P + l * L_N
+        L = (1- self.l) * L_P + self.l * L_N
 
         return L 
 
