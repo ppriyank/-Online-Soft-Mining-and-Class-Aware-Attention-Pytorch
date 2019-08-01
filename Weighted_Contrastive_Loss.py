@@ -45,9 +45,9 @@ class OSM_CAA_Loss(nn.Module):
         for i in range(n):
             a_i = denominator[i][labels[i]] / torch.sum(denominator[i])
             A.append(a_i)
-
+        # a_i's 
         atten_class = torch.stack(A)
-        
+        #a_ij's
         A = torch.min(atten_class.expand(n,n) , atten_class.view(-1,1).expand(n,n) ) # pairwise minimum of attention weights 
         
         W = S * A 
