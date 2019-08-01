@@ -38,11 +38,12 @@ class OSM_CAA_Loss(nn.Module):
         S = S + S_ * n_mask.float()
         
         #embd is the weights of the FC layer for classification R^(dxC) 
-        denominator = torch.sum(torch.exp(torch.mm(x , embd)),1) 
+        embd = nn.functional.normalize(embd, p=2, dim=0) # normalize the embedding
+        denominator = torch.exp(torch.mm(x , embd)) 
         
         A = [] #attention corresponding to each feature fector
         for i in range(n):
-            a_i = torch.exp(torch.dot(x[i] , embd[:,labels[i]])) / denominator[i] 
+            a_i = denominator[i][labels[i]] / torch.sum(denominator[i])
             A.append(a_i)
 
         atten_class = torch.stack(A)
