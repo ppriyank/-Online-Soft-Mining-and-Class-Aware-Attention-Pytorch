@@ -53,12 +53,12 @@ class OSM_CAA_Loss(nn.Module):
         W = S * A 
         W_P = W * p_mask.float()
         W_N = W * n_mask.float()
-        #if self.use_gpu:
-        #    W_P = W_P * (1 - torch.eye(n, n).float().cuda())
-        #    W_N = W_N * (1 - torch.eye(n, n).float().cuda())
-        #else:
-        #    W_P = W_P * (1 - torch.eye(n, n).float())
-        #    W_N = W_N * (1 - torch.eye(n, n).float())
+        if self.use_gpu:
+           W_P = W_P * (1 - torch.eye(n, n).float().cuda()) #dist between (xi,xi) not necessarily 0, avoiding precision error
+           W_N = W_N * (1 - torch.eye(n, n).float().cuda())
+        else:
+           W_P = W_P * (1 - torch.eye(n, n).float())
+           W_N = W_N * (1 - torch.eye(n, n).float())
         
         L_P = 1.0/2 * torch.sum(W_P * torch.pow(dist, 2)) / torch.sum(W_P)
         L_N = 1.0/2 * torch.sum(W_N * torch.pow(S_ , 2)) / torch.sum(W_N)
