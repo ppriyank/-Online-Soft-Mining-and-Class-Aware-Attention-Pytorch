@@ -14,7 +14,7 @@ For an input vector x : n x d
 [A](https://github.com/ppriyank/-Online-Soft-Mining-and-Class-Aware-Attention-Pytorch/blob/master/Weighted_Contrastive_Loss.py#L44) refers to the pairwise attention score Aij = min(ai , aj)
 
 
-## Use (person re-id):
+## Use (person re-id) Pytorch:
 ```
 
 criterion_osm_caa = OSM_CAA_Loss()
