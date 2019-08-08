@@ -4,7 +4,6 @@ import tensorflow as tf
 
 class OSM_CAA_Loss():
     def __init__(self, alpha=1.2, l=0.5, use_gpu=True, batch_size=32):
-        super(OSM_CAA_Loss, self).__init__()
         self.use_gpu = use_gpu
         self.alpha = 1.2 # margin of weighted contrastive loss, as mentioned in the paper 
         self.l = 0.5 #  hyperparameter controlling weights of positive set and the negative set  
@@ -19,8 +18,9 @@ class OSM_CAA_Loss():
         '''
         x = tf.math.l2_normalize(x, 1)
         n = self.n
-        r = tf.reduce_sum(x*x, 1)
-        r = tf.reshape(r, [-1, 1])
+        r = tf.ones([n, 1], tf.float32)
+        #         r = tf.reduce_sum(x*x, 1)
+        #         r = tf.reshape(r, [-1, 1])
         dist = r - 2*tf.matmul(x, tf.transpose(x)) + tf.transpose(r)
         dist = tf.math.sqrt(dist)
         
@@ -32,11 +32,11 @@ class OSM_CAA_Loss():
         S = S * p_mask
         S_ = S_ * n_mask
         S  = S + S_
-        
+
+        embd = tf.math.l2_normalize(embd, 0)
         denom = tf.reduce_sum(tf.exp(tf.matmul(x , embd)),1)
         num =  tf.exp (tf.reduce_sum( x * tf.transpose(tf.gather(embd , labels , axis=1)) , 1 ))
         
-        embd = tf.math.l2_normalize(embd, 0)
         atten_class = num / denom
         temp = tf.tile(tf.expand_dims(atten_class, 0),[n,1])
         A =  tf.math.minimum(temp , tf.transpose(temp))
