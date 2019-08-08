@@ -1,4 +1,4 @@
-# Online-Soft-Mining-and-Class-Aware-Attention-Pytorch
+# Online-Soft-Mining-and-Class-Aware-Attention
 Implementation of Weighted Contrastive Loss from 
 
 
