@@ -1,4 +1,4 @@
-import tensorflow 
+import tensorflow as tf
 # Implementation of Deep Metric Learning by Online Soft Mining and Class-Aware Attention
 # https://arxiv.org/pdf/1811.01459v2.pdf
 
@@ -26,9 +26,9 @@ class OSM_CAA_Loss():
         
         p_mask = tf.cast(tf.equal(labels[:, tf.newaxis], labels[tf.newaxis, :]), tf.float32)
         n_mask = 1- p_mask
-       
-        S = torch.exp( -1.0 *  torch.pow(dist, 2)  / (self.osm_sigma * self.osm_sigma) )
-        S_ = torch.clamp( self.alpha - dist , min=0.0)  # max (0 , \alpha - dij)
+        
+        S = tf.exp(-1 * dist / (self.osm_sigma * self.osm_sigma ) )
+        S_  = tf.nn.relu(self.alpha - dist)
         S = S * p_mask
         S_ = S_ * n_mask
         S  = S + S_
@@ -37,8 +37,8 @@ class OSM_CAA_Loss():
         num =  tf.exp (tf.reduce_sum( x * tf.transpose(tf.gather(embd , labels , axis=1)) , 1 ))
         
         embd = tf.math.l2_normalize(embd, 0)
-        atten_class = num / denominator
-        temp = tf.tile(tf.expand_dims(atten_class, 0),[32,1])
+        atten_class = num / denom
+        temp = tf.tile(tf.expand_dims(atten_class, 0),[n,1])
         A =  tf.math.minimum(temp , tf.transpose(temp))
 
         W = S * A 
