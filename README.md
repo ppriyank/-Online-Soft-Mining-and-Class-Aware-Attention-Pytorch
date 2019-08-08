@@ -27,3 +27,23 @@ if use_gpu:
 else:
   loss = criterion_osm_caa(features, pids , model.classifier.weight.t())         
 ```
+
+## Tensorflow:
+```
+sess =tf.Session()
+x = tf.random.uniform([32,200]) #(batch size= 32, embedding dim= 200)
+embd  =tf.random.uniform([200, 10]) #(embedding dim= 200 , num of classes = 10)
+
+loss = OSM_CAA_Loss()
+osm_loss = loss.forward
+
+loss_val = osm_loss(x , labels , embd)
+sess.run(loss_val)
+```
+
+
+
+
+
+
+
