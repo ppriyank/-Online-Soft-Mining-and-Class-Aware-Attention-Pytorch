@@ -29,7 +29,7 @@ class OSM_CAA_Loss(nn.Module):
         dist = dist.clamp(min=1e-12).sqrt()  # for numerical stability & pairwise distance, dij
 
         S = torch.exp( -1.0 *  torch.pow(dist, 2)  / (self.osm_sigma * self.osm_sigma) )
-        S_ = torch.clamp( self.alpha - dist , min=0.0)  # max (0 , \alpha - dij)
+        S_ = torch.clamp( self.alpha - dist , min=1e-12)  # max (0 , \alpha - dij) # 1e-12, 0 may result in nan error
 
         p_mask = labels.expand(n, n).eq(labels.expand(n, n).t()) # same label == 1
         n_mask = 1- p_mask # oposite label == 1   
