@@ -29,7 +29,7 @@ class OSM_CAA_Loss():
         n_mask = 1- p_mask
         
         S = tf.exp(-1 * dist / (self.osm_sigma * self.osm_sigma ) )
-        S_  = tf.nn.relu(self.alpha - dist)
+        S_  = tf.clip_by_value(tf.nn.relu(self.alpha - dist), clip_value_min=tf.constant(1e-12) , clip_value_max=tf.constant(1e12)) 
         S = S * p_mask
         S_ = S_ * n_mask
         S  = S + S_
